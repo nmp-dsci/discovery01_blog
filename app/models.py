@@ -4,7 +4,7 @@ from . import db, login_manager
 from flask import current_app, request, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from datetime import datetime
-import os
+import os, random
 
 # use these to define what a user can do
 class Permission:
@@ -13,6 +13,21 @@ class Permission:
     WRITE_ARTICLES = 0x04
     MODERATE_COMMENTS = 0x08
     ADMINISTER = 0x80
+
+class PostCategories:
+    categories =    [   
+            'World'
+        ,   'Technology'
+        ,   'Design'
+        ,   'Culture'
+        ,   'Business'
+        ,   'Politics'
+        ,   'Opinion'
+        ,   'Science'
+        ,   'Health'
+        ,   'Style'
+        ,   'Travel'
+        ]
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -127,14 +142,16 @@ def load_user(user_id):
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    category = db.Column(db.Text)
     # comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
-    def generate_demo(count=20):
+    def generate_demo(count=50):
         from random import seed, randint
         import forgery_py
 
@@ -142,9 +159,13 @@ class Post(db.Model):
         user_count = User.query.count()
         for i in range(count):
             u = User.query.offset(randint(0, user_count - 1)).first()
-            p = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 5)),
-                     timestamp=forgery_py.date.date(True),
-                     author=u)
+            p = Post(
+                    title=forgery_py.lorem_ipsum.title()
+                ,   body=forgery_py.lorem_ipsum.sentences(randint(1, 5))
+                ,   timestamp=forgery_py.date.date(True,0,600)
+                ,   author=u
+                ,   category=random.sample(PostCategories.categories,k=1)[0]
+                )
             db.session.add(p)
             db.session.commit()
 

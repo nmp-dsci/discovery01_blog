@@ -1,0 +1,79 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}Compelling Blog{% endblock %}
+
+{% block html_attribs %} lang="en"{% endblock %}
+
+{% block head %}
+{{ super() }}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+{% endblock %}
+
+{% block styles %}
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" >
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='googleapis.css') }}" >
+    <link rel="stylesheet" href="{{ url_for('static', filename='blog.css') }}" >
+{% endblock %}
+
+
+{% block navbar %}
+    <!-- other routes to go to -->
+    <div class="container">
+        <header class="blog-header py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+                <div class="col-4 pt-2">
+                        <a class="text-muted" href="{{ url_for('main.about') }}">About Us</a>
+                        <a class="text-muted" href="{{ url_for('main.contact') }}">Contact Us</a>
+                    </div>
+                <div class="col-4 text-center">
+                    <a class="blog-header-logo text-dark" href="{{ url_for('main.home') }}">Blog-Topia</a>
+                </div>
+                <div class="col-4 d-flex justify-content-end align-items-center">
+                    <a class="text-muted" href="{{ url_for('admin.login') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+                    </a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('admin.login') }}">Admin</a>
+                </div>
+            </div>
+        </header>
+        <!--  topics for Blog  -->
+        <div class="nav-scroller py-1 mb-2" >
+            <nav class="nav d-flex justify-content-between">
+                {% for category in categories %}
+                <a class="p-2 text-muted" href="{{ url_for('main.category',category=category.category) }}">{{ category.category }} </a>
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+        {% block page_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='slim.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='holder/holder.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
+    <script>
+            Holder.addTheme('thumb', {
+            bg: '#55595c',
+            fg: '#eceeef',
+            text: 'Thumbnail'
+            });
+    </script>
+{{ super() }}
+
+{% endblock %}
