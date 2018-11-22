@@ -27,4 +27,5 @@ def about():
 
 @main.route('/blog/<int:id>',methods=['GET'])
 def blog(id):
-    return render_template('main/blog.html',id = id)
+    post = Post.query.filter_by(id = id).first()
+    return render_template('main/blog.html',post = post)
