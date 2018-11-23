@@ -71,7 +71,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
-    # confirmed = db.Column(db.Boolean, default=False)
+    confirmed = db.Column(db.Boolean, default=True)# False when email Authentication
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
@@ -90,7 +90,7 @@ class User(UserMixin, db.Model):
         u = User(email=os.environ.get('DISCOVERY01_ADMIN')
             ,   username='demo_admin'
             ,   password='demo_demo'
-            #,   confirmed=True
+            ,   confirmed=True
             ,   name=forgery_py.name.full_name()
             ,   location=forgery_py.address.city()
             ,   about_me=forgery_py.lorem_ipsum.sentence()

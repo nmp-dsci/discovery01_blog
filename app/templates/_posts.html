@@ -7,8 +7,8 @@
         <div class="col px-0">
             <strong class="d-inline-block mb-2 text-primary">{{ post.category }}</strong>
             <h1 class="display-4 font-italic">{{ post.title }}</h1>
-            <p class="lead my-3">{{ ' '.join(post.body.split(' ')[:10])+'...' }}</p>
-            <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continue reading...</a></p>
+            <p class="lead my-3">{{ ' '.join(post.body.split(' ')[:20])+'...' }}</p>
+            <p class="lead mb-0"><a href="{{ url_for('main.blog',id=post.id) }}" class="text-white font-weight-bold">Continue reading...</a></p>
         </div>
     </div>
     <!-- Ancillary blogs -->
@@ -20,11 +20,11 @@
                         <div class="card-body d-flex flex-column align-items-start">
                             <strong class="d-inline-block mb-2 text-primary">{{ post.category }}</strong>
                             <h3 class="mb-0">
-                                <a class="text-dark" href="#">{{ post.title }}</a>
+                                <a class="text-dark" href="{{ url_for('main.blog',id=post.id) }}">{{ post.title }}</a>
                             </h3>
                             <div class="mb-1 text-muted">{{ post.timestamp.strftime('%b %Y') }}</div>
                             <p class="card-text mb-auto">{{ ' '.join(post.body.split(' ')[:10])+'...' }}</p>
-                            <a href="#">Continue reading</a>
+                            <a href="{{ url_for('main.blog',id=post.id) }}">Continue reading</a>
                         </div>
                         <img class="card-img-right flex-auto d-none d-lg-block" data-src="holder.js/200x250?theme=thumb" alt="Card image cap">
                     </div>
