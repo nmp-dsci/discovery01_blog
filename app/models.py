@@ -87,9 +87,9 @@ class User(UserMixin, db.Model):
         import forgery_py
 
         seed()
-        u = User(email=os.environ.get('DISCOVERY01_ADMIN')
+        u = User(email='admin@demo.com'
             ,   username='demo_admin'
-            ,   password='demo_demo'
+            ,   password='demo'
             ,   confirmed=True
             ,   name=forgery_py.name.full_name()
             ,   location=forgery_py.address.city()
@@ -145,7 +145,8 @@ class Post(db.Model):
     title = db.Column(db.Text)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    edit_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category = db.Column(db.Text)
     # comments = db.relationship('Comment', backref='post', lazy='dynamic')
@@ -162,10 +163,11 @@ class Post(db.Model):
             p = Post(
                     title=forgery_py.lorem_ipsum.title()
                 ,   body=forgery_py.lorem_ipsum.sentences(randint(1, 5))
-                ,   timestamp=forgery_py.date.date(True,0,600)
+                ,   create_timestamp=forgery_py.date.date(True,0,600)
                 ,   author=u
                 ,   category=random.sample(PostCategories.categories,k=1)[0]
                 )
+            p.edit_timestamp = p.create_timestamp
             db.session.add(p)
             db.session.commit()
 

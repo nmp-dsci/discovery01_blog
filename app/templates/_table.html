@@ -3,19 +3,29 @@
       <table class="table table-striped table-sm">
         <thead>
           <tr>
-            <th>id</th>
-            <th>category</th>
-            <th>title</th>
-            <th>created time</th>
+            {% for col in columns.keys() %}
+            <th>{{ columns[col].title() }}</th>
+            {% endfor %}
           </tr>
         </thead>
         <tbody>
+          {% for post in table %}
           <tr>
-            <td>1,001</td>
-            <td>Lorem</td>
-            <td>ipsum</td>
-            <td>dolor</td>
+            {% for col in columns.keys() %}
+              {% if 'time' in col %}
+              <td>{{ post[col].strftime('%d %b %Y') }} </td>
+              {% elif 'id' == col %}
+              <td><a href="{{ url_for('main.blog',id=post[col]) }}" >{{ post[col] }}</a> </td>
+              {% elif 'category' == col %}
+              <td><a href="{{ url_for('main.home',id=post[col]) }}" >{{ post[col] }}</a> </td>
+              {% elif 'edit' == col %}
+              <td><a href="{{ url_for('admin.edit_post',id=post.id) }}" >edit post</a> </td>
+              {% else %}
+              <td>{{ post[col] }} </td>
+              {% endif %}
+            {% endfor %}
           </tr>
+          {% endfor %}
         </tbody>
     </table>
 </div>
