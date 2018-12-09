@@ -1,0 +1,9 @@
+version: '3.1'
+services:
+  blog:
+    restart: always
+    build: ./blog
+    ports:
+    - "5000:5000"
+    volumes:
+    - .:/blog
